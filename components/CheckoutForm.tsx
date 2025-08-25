@@ -87,7 +87,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ onOrderSuccess }) => {
   };
 
   // Determine overall form validity based on the errors state and required fields
-  const isFormValid = !errors.firstName && !errors.lastName && !errors.phone && formData.firstName.trim() !== '' && formData.lastName.trim() !== '' && formData.phone.trim() !== '';
+  const isFormCurrentlyValid = !errors.firstName && !errors.lastName && !errors.phone && formData.firstName.trim() !== '' && formData.lastName.trim() !== '' && formData.phone.trim() !== '';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -172,7 +172,7 @@ Merci de confirmer la commande et de me communiquer les modalités de paiement e
       <div className="text-center pt-4">
         <button
           type="submit"
-          disabled={!validateForm() || cartItems.length === 0}
+          disabled={!isFormCurrentlyValid || cartItems.length === 0}
           className="w-full sm:w-auto bg-rose-500 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-rose-600 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
           Commander via WhatsApp

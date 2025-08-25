@@ -126,7 +126,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (response.ok) {
         const data: LoginResponse = await response.json().catch(() => ({}));
         // Handle case where API returns only token
-        const user = data.user || data; // Adjust based on your API structure
+        const user = data.user;
         
         // Store JWT token if provided
         if (data.token) {
@@ -135,7 +135,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         
         setCurrentUser(user);
         
-        if (user.role === 'admin') {
+        if (user && user.role === 'admin') {
           await fetchUsers();
         }
         

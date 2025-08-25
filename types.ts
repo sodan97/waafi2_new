@@ -20,7 +20,7 @@ export interface User {
   password: string; // NOTE: In a real app, this should be a securely stored hash
   firstName: string;
   lastName: string;
-  role: 'customer' | 'admin';
+  role: string | 'admin' | 'user';
 }
 
 export interface Order {
@@ -39,8 +39,8 @@ export interface Order {
 }
 
 export interface LoginResponse {
-  token: string;
-  user: User;
+  token: string; // The JWT token
+  user: User; // The logged-in user object
 }
 
 export interface Reservation {
