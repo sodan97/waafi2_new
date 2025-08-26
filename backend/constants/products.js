@@ -4,8 +4,7 @@ export const PRODUCTS = [
     name: "Parfum 'Fleur de Nuit'",
     price: 35000,
     imageUrls: [
-      "https://images.unsplash.com/photo-1585398918583-1b95b8b0a93c?q=80&w=1887&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1541643600914-78b084683602?q=80&w=1887&auto=format&fit=crop",
+      
       "https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=1887&auto=format&fit=crop"
     ],
     description: "Une fragrance envoûtante et mystérieuse, mêlant jasmin, ambre et notes boisées. Parfait pour les soirées où vous voulez laisser une impression mémorable.",

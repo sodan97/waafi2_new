@@ -284,7 +284,7 @@ const OrderManager: React.FC = () => {
         const user = users.find(u => u.id === order.userId);
         return {
             id: order.id.slice(-6).toUpperCase(),
-            firstName: order.customer.firstName,
+            firstName: order.customer?.firstName,
             lastName: order.customer.lastName,
             email: user?.email ?? 'Invité',
             phone: order.customer.phone,
@@ -348,7 +348,7 @@ const ReservationManager: React.FC = () => {
                 .filter(o => o.userId === res.userId)
                 .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
             
-            const userPhone = userOrders.length > 0 ? userOrders[0].customer.phone : 'N/A';
+            const userPhone = userOrders.length > 0 ? userOrders[0]?.customer?.phone : 'N/A';
 
             return {
                 productName: product?.name ?? 'Inconnu',
