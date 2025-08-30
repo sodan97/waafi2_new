@@ -55,6 +55,7 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       }
 
       const data = await response.json();
+      console.log('Fetched orders data:', data);
       setOrders(data);
     } catch (err: any) {
       setError(err.message || 'Failed to fetch orders');
@@ -96,6 +97,7 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     setIsLoading(true);
     setError(null);
     try {
+ console.log(`Updating order ID: ${orderId} with status: ${newStatus}`);
       const response = await fetch(`${API_BASE_URL}/orders/${orderId}/status`, {
         method: 'PUT',
         headers: {

@@ -5,7 +5,9 @@ import * as XLSX from 'xlsx';
 interface Column<T> {
   Header: string;
   accessor: keyof T;
+  Cell?: React.FC<{ value: any; row: { original: T } }>;
 }
+
 
 interface DataTableProps<T extends object> {
   columns: Column<T>[];
@@ -127,8 +129,12 @@ const DataTable = <T extends object>({ columns, data, exportFilename = 'data' }:
             {filteredAndSortedData.map((row, rowIndex) => (
               <tr key={rowIndex} className="hover:bg-gray-50">
                 {columns.map(col => (
-                  <td key={col.accessor as string} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {String(row[col.accessor])}
+                  <td key={col.accessor as string} className={`px-6 py-4 whitespace-nowrap text-sm text-gray-700 ${col.Cell ? 'relative' : ''}`}>
+                    {'Cell' in col && col.Cell ? (
+                      <col.Cell value={row[col.accessor]} row={{ original: row }} />
+                    ) : (
+                    String(row[col.accessor])
+                    )}
                   </td>
                 ))}
               </tr>

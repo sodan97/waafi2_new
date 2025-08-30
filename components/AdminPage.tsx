@@ -266,8 +266,7 @@ const OrderManager: React.FC = () => {
                     <select
                         value={value || 'Pas commencé'} // Utilisez la valeur actuelle ou 'Pas commencé' par défaut
                         onChange={(e) => {
-                            updateOrderStatus(row.original.id, e.target.value);
-                            // Example if you had an update function in useOrder context:
+                            updateOrderStatus(row.original._id, e.target.value); // Utiliser l'ID MongoDB réel
                             // updateOrderStatus(row.original.id, e.target.value);
                         }}
                     >
@@ -283,7 +282,7 @@ const OrderManager: React.FC = () => {
     const data = useMemo(() => orders.map(order => {
         const user = users.find(u => u.id === order.userId);
         return {
-            id: order.id.slice(-6).toUpperCase(),
+            id: order._id?.slice(-6).toUpperCase() ?? '', // Utiliser _id de MongoDB
             firstName: order.customer?.firstName,
             lastName: order.customer.lastName,
             email: user?.email ?? 'Invité',
@@ -292,7 +291,7 @@ const OrderManager: React.FC = () => {
             time: new Date(order.date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
             total: order.total.toLocaleString('fr-FR'),
             items: order.items.map(item => `${item.name} (x${item.quantity})`).join(', '),
-            status: order.status || 'Pas commencé', // Ensure status is included, default if missing
+            status: order.status || 'Pas commencé',
         };
     }), [orders, users]);
 
@@ -348,7 +347,8 @@ const ReservationManager: React.FC = () => {
                 .filter(o => o.userId === res.userId)
                 .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
             
-            const userPhone = userOrders.length > 0 ? userOrders[0]?.customer?.phone : 'N/A';
+                const userPhone = userOrders.length > 0 ? userOrders[0]?.customer?.phone ?? 'N/A' : 'N/A';
+
 
             return {
                 productName: product?.name ?? 'Inconnu',
