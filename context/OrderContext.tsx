@@ -7,7 +7,7 @@ interface OrderContextType {
   addOrder: (order: Omit<Order, 'id' | 'date' | 'status'>) => Promise<Order | undefined>;
   isLoading: boolean;
   error: string | null;
-  updateOrderStatus: (orderId: string, newStatus: string) => void;
+  updateOrderStatus: (orderId: string, newStatus: string) => Promise<void>;
   fetchOrders: () => Promise<void>;
   deleteOrder: (orderId: string) => Promise<void>;
 }
@@ -37,10 +37,8 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       let url = `${API_BASE_URL}/orders`;
       
       if (currentUser?.role === 'admin') {
-        // Admin gets all orders
         url = `${API_BASE_URL}/orders`;
       } else if (currentUser) {
-        // Regular user gets their own orders
         url = `${API_BASE_URL}/orders/myorders?userId=${currentUser.id}`;
       }
 
@@ -94,10 +92,15 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   };
 
   const updateOrderStatus = async (orderId: string, newStatus: string) => {
-    setIsLoading(true);
+    const originalOrders = orders;
+    const updatedOrders = orders.map(order =>
+      order._id === orderId ? { ...order, status: newStatus } : order
+    );
+    setOrders(updatedOrders);
     setError(null);
+
     try {
- console.log(`Updating order ID: ${orderId} with status: ${newStatus}`);
+      console.log(`Updating order ID: ${orderId} with status: ${newStatus}`);
       const response = await fetch(`${API_BASE_URL}/orders/${orderId}/status`, {
         method: 'PUT',
         headers: {
@@ -110,23 +113,21 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const updatedOrder = await response.json();
+      const updatedOrderFromServer = await response.json();
       setOrders(prevOrders =>
         prevOrders.map(order =>
-          order.id === orderId ? updatedOrder : order
+          order._id === orderId ? updatedOrderFromServer : order
         )
       );
     } catch (err: any) {
+      setOrders(originalOrders);
       setError(err.message || 'Failed to update order status');
       console.error("Error updating order status:", err);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const deleteOrder = async (orderId: string) => {
     console.log(`Deleting order ${orderId}`);
-    // TODO: Implement actual DELETE request and state update logic
   };
 
   return (

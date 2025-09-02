@@ -58,21 +58,21 @@ const ProductManager: React.FC = () => {
     };
     
     const handleDelete = (product: Product) => {
-        if (window.confirm(`Voulez-vous vraiment déplacer le produit "${product.name}" vers la corbeille ? Il ne sera plus visible par les clients mais pourra être restauré.`)) {
+        if (window.confirm(`Voulez-vous vraiment déplacer le produit \"${product.name}\" vers la corbeille ? Il ne sera plus visible par les clients mais pourra être restauré.`)) {
             deleteProduct(product.id);
-            showNotification(`Le produit "${product.name}" a été déplacé vers la corbeille.`);
+            showNotification(`Le produit \"${product.name}\" a été déplacé vers la corbeille.`);
         }
     };
 
     const handleRestore = (product: Product) => {
         restoreProduct(product.id);
-        showNotification(`Le produit "${product.name}" a été restauré.`);
+        showNotification(`Le produit \"${product.name}\" a été restauré.`);
     };
 
     const handlePermanentDelete = (product: Product) => {
-        if (window.confirm(`Êtes-vous sûr de vouloir supprimer DÉFINITIVEMENT le produit "${product.name}" ? Cette action est irréversible.`)) {
+        if (window.confirm(`Êtes-vous sûr de vouloir supprimer DÉFINITIVEMENT le produit \"${product.name}\" ? Cette action est irréversible.`)) {
             permanentlyDeleteProduct(product.id);
-            showNotification(`Le produit "${product.name}" a été supprimé définitivement.`, 'error');
+            showNotification(`Le produit \"${product.name}\" a été supprimé définitivement.`, 'error');
         }
     };
 
@@ -267,7 +267,6 @@ const OrderManager: React.FC = () => {
                         value={value || 'Pas commencé'} // Utilisez la valeur actuelle ou 'Pas commencé' par défaut
                         onChange={(e) => {
                             updateOrderStatus(row.original._id, e.target.value); // Utiliser l'ID MongoDB réel
-                            // updateOrderStatus(row.original.id, e.target.value);
                         }}
                     >
                         <option value="Pas commencé">Pas commencé</option>
@@ -277,12 +276,13 @@ const OrderManager: React.FC = () => {
                 );
             }
         },
-    ], []);
+    ], [updateOrderStatus]);
 
     const data = useMemo(() => orders.map(order => {
         const user = users.find(u => u.id === order.userId);
         return {
             id: order._id?.slice(-6).toUpperCase() ?? '', // Utiliser _id de MongoDB
+            _id: order._id,
             firstName: order.customer?.firstName,
             lastName: order.customer.lastName,
             email: user?.email ?? 'Invité',

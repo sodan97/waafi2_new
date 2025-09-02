@@ -68,9 +68,12 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
   const activeProducts = products.filter(p => p.status === 'active');
 
   const updateProductStock = useCallback(async (productId: number, newStock: number) => {
-    setIsLoadingProducts(true);
-    setProductError(null);
-    
+    const originalProducts = products;
+    const updatedProducts = products.map(p => 
+      p.id === productId ? { ...p, stock: newStock } : p
+    );
+    setProducts(updatedProducts);
+
     try {
       const response = await fetch(`${API_BASE_URL}/products/${productId}`, {
         method: 'PUT',
@@ -84,17 +87,17 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const updatedProduct = await response.json();
+      const updatedProductFromServer = await response.json();
 
       setProducts(prevProducts => {
         const oldProduct = prevProducts.find(p => p.id === productId);
-        if (oldProduct && oldProduct.stock <= 0 && updatedProduct.stock > 0) {
+        if (oldProduct && oldProduct.stock <= 0 && updatedProductFromServer.stock > 0) {
           const reservations = getReservationsByProduct(productId);
           if (reservations.length > 0) {
             reservations.forEach(reservation => {
               addNotification({
                 userId: reservation.userId,
-                message: `Bonne nouvelle ! Le produit "${oldProduct.name}" que vous attendiez est de nouveau en stock.`,
+                message: `Bonne nouvelle ! Le produit \"${oldProduct.name}\" que vous attendiez est de nouveau en stock.`,
                 productId: oldProduct.id,
               });
             });
@@ -102,19 +105,18 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
           }
         }
         return prevProducts.map(p => 
-          p.id === productId ? updatedProduct : p
+          p.id === productId ? updatedProductFromServer : p
         );
       });
     } catch (error) {
       console.error('Error updating product stock:', error);
+      setProducts(originalProducts);
       setProductError({ 
         message: error instanceof Error ? error.message : 'An unknown error occurred',
         status: error instanceof Error && 'status' in error ? (error as any).status : undefined
       });
-    } finally {
-      setIsLoadingProducts(false);
     }
-  }, [getReservationsByProduct, addNotification, removeReservationsForProduct]);
+  }, [products, getReservationsByProduct, addNotification, removeReservationsForProduct]);
 
   const addProduct = useCallback(async (productData: Omit<Product, 'id' | 'status'>) => {
     setIsLoadingProducts(true);
@@ -148,8 +150,12 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
   }, []);
 
   const editProduct = useCallback(async (productId: number, productData: Omit<Product, 'id' | 'status'>) => {
-    setIsLoadingProducts(true);
-    setProductError(null);
+    const originalProducts = products;
+    const updatedProducts = products.map(p => 
+      p.id === productId ? { ...p, ...productData } : p
+    );
+    setProducts(updatedProducts);
+
     try {
       const response = await fetch(`${API_BASE_URL}/products/${productId}`, {
         method: 'PUT',
@@ -163,26 +169,29 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const updatedProduct = await response.json();
+      const updatedProductFromServer = await response.json();
       setProducts(prevProducts => 
         prevProducts.map(p => 
-          p.id === productId ? updatedProduct : p
+          p.id === productId ? updatedProductFromServer : p
         )
       );
     } catch (error) {
       console.error('Error editing product:', error);
+      setProducts(originalProducts);
       setProductError({ 
         message: error instanceof Error ? error.message : 'An unknown error occurred',
         status: error instanceof Error && 'status' in error ? (error as any).status : undefined
       });
-    } finally {
-      setIsLoadingProducts(false);
     }
-  }, []);
+  }, [products]);
 
   const updateProductStatus = useCallback(async (productId: number, status: 'active' | 'archived') => {
-    setIsLoadingProducts(true);
-    setProductError(null);
+    const originalProducts = products;
+    const updatedProducts = products.map(p => 
+      p.id === productId ? { ...p, status } : p
+    );
+    setProducts(updatedProducts);
+
     try {
       const response = await fetch(`${API_BASE_URL}/products/${productId}/status`, {
         method: 'PUT',
@@ -196,26 +205,29 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const updatedProduct = await response.json();
+      const updatedProductFromServer = await response.json();
       setProducts(prevProducts => 
         prevProducts.map(p => 
-          p.id === productId ? updatedProduct : p
+          p.id === productId ? updatedProductFromServer : p
         )
       );
     } catch (error) {
       console.error('Error updating product status:', error);
+      setProducts(originalProducts);
       setProductError({ 
         message: error instanceof Error ? error.message : 'An unknown error occurred',
         status: error instanceof Error && 'status' in error ? (error as any).status : undefined
       });
-    } finally {
-      setIsLoadingProducts(false);
     }
-  }, []);
+  }, [products]);
 
   const deleteProduct = useCallback(async (productId: number) => {
-    setIsLoadingProducts(true);
-    setProductError(null);
+    const originalProducts = products;
+    const updatedProducts = products.map(p => 
+      p.id === productId ? { ...p, status: 'deleted' } : p
+    );
+    setProducts(updatedProducts);
+
     try {
       const response = await fetch(`${API_BASE_URL}/products/${productId}/status`, {
         method: 'PUT',
@@ -229,26 +241,29 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const updatedProduct = await response.json();
+      const updatedProductFromServer = await response.json();
       setProducts(prevProducts => 
         prevProducts.map(p => 
-          p.id === productId ? updatedProduct : p
+          p.id === productId ? updatedProductFromServer : p
         )
       );
     } catch (error) {
       console.error('Error soft-deleting product:', error);
+      setProducts(originalProducts);
       setProductError({ 
         message: error instanceof Error ? error.message : 'An unknown error occurred',
         status: error instanceof Error && 'status' in error ? (error as any).status : undefined
       });
-    } finally {
-      setIsLoadingProducts(false);
     }
-  }, []);
+  }, [products]);
 
   const restoreProduct = useCallback(async (productId: number) => {
-    setIsLoadingProducts(true);
-    setProductError(null);
+    const originalProducts = products;
+    const updatedProducts = products.map(p => 
+      p.id === productId ? { ...p, status: 'active' } : p
+    );
+    setProducts(updatedProducts);
+
     try {
       const response = await fetch(`${API_BASE_URL}/products/${productId}/status`, {
         method: 'PUT',
@@ -262,26 +277,28 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const updatedProduct = await response.json();
+      const updatedProductFromServer = await response.json();
       setProducts(prevProducts => 
         prevProducts.map(p => 
-          p.id === productId ? updatedProduct : p
+          p.id === productId ? updatedProductFromServer : p
         )
       );
     } catch (error) {
       console.error('Error restoring product:', error);
+      setProducts(originalProducts);
       setProductError({ 
         message: error instanceof Error ? error.message : 'An unknown error occurred',
         status: error instanceof Error && 'status' in error ? (error as any).status : undefined
       });
-    } finally {
-      setIsLoadingProducts(false);
     }
-  }, []);
+  }, [products]);
 
   const permanentlyDeleteProduct = useCallback(async (productId: number) => {
-    setIsLoadingProducts(true);
-    setProductError(null);
+    const originalProducts = products;
+    const updatedProducts = products.filter(p => p.id !== productId);
+    setProducts(updatedProducts);
+    removeReservationsForProduct(productId);
+
     try {
       const response = await fetch(`${API_BASE_URL}/products/${productId}/permanent`, {
         method: 'DELETE',
@@ -294,18 +311,15 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      setProducts(prevProducts => prevProducts.filter(p => p.id !== productId));
-      removeReservationsForProduct(productId);
     } catch (error) {
       console.error('Error permanently deleting product:', error);
+      setProducts(originalProducts);
       setProductError({ 
         message: error instanceof Error ? error.message : 'An unknown error occurred',
         status: error instanceof Error && 'status' in error ? (error as any).status : undefined
       });
-    } finally {
-      setIsLoadingProducts(false);
     }
-  }, [removeReservationsForProduct]);
+  }, [products, removeReservationsForProduct]);
 
   const value = {
     products,

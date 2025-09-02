@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Product } from '../types';
 import { View } from '../App';
 import { useAuth } from '../context/AuthContext';
+import { useReservation } from '../context/ReservationContext'; // Import useReservation
 import { MERCHANT_WHATSAPP_NUMBER, ArrowLeftIcon } from '../constants';
 import { QRCodeCanvas } from 'qrcode.react';
 
@@ -14,8 +15,16 @@ interface NotificationOptionsModalProps {
 
 const NotificationOptionsModal: React.FC<NotificationOptionsModalProps> = ({ product, onClose, setView, setPendingReservation }) => {
     const { currentUser } = useAuth();
+    const { addReservation } = useReservation(); // Get addReservation function
     const [modalView, setModalView] = useState<'options' | 'qr'>('options');
     const [whatsAppUrl, setWhatsAppUrl] = useState('');
+
+    useEffect(() => {
+        // Automatically create reservation if user is logged in when modal opens
+        if (currentUser) {
+            addReservation(product.id, currentUser.id);
+        }
+    }, [currentUser, product.id, addReservation]);
 
     const handleCreateAccount = () => {
         setPendingReservation(product.id);
