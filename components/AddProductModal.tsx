@@ -30,9 +30,9 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ onClose }) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.files) {
           const files = Array.from(e.target.files);
-          files.forEach(file => {
+          files.forEach((file: File) => {
               if (file.size > 2 * 1024 * 1024) { // 2MB limit
-                  setError(`L'image "${file.name}" est trop volumineuse (max 2MB).`);
+                  setError(`L'image \"${file.name}\" est trop volumineuse (max 2MB).`);
                   return;
               }
               const reader = new FileReader();
@@ -64,7 +64,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ onClose }) => {
     e.preventDefault();
     setError('');
 
-    if (Object.values(formData).some(value => value.trim() === '')) {
+    if (Object.values(formData).some(value => String(value).trim() === '')) {
         setError('Tous les champs de texte sont requis.');
         return;
     }
