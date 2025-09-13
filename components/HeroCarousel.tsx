@@ -1,17 +1,21 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
+
+const HERO_SLIDES = [
+  {
+    id: 1,
     imageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2574&auto=format&fit=crop',
     title: 'Bienvenue chez Wafi',
     subtitle: 'Votre destination beauté et technologie au Sénégal'
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const goToNext = useCallback(() => {
+  },
+  {
+    id: 2,
     imageUrl: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=2574&auto=format&fit=crop',
     title: 'Produits de Beauté Premium',
     subtitle: 'Révélez votre beauté naturelle avec nos soins d\'exception'
-  const goToPrevious = () => {
-    setCurrentIndex(prevIndex => (prevIndex - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
-  };
+  },
+  {
+    id: 3,
     imageUrl: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=2574&auto=format&fit=crop',
     title: 'Technologie de Pointe',
     subtitle: 'Les dernières innovations tech à portée de main'
@@ -22,6 +26,22 @@ import React, { useState, useEffect, useCallback } from 'react';
     title: 'Parfums & Cosmétiques',
     subtitle: 'Des fragrances uniques et des accessoires tendance'
   }
+];
+
+const HeroCarousel = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const goToNext = useCallback(() => {
+    setCurrentIndex(prevIndex => (prevIndex + 1) % HERO_SLIDES.length);
+  }, []);
+
+  const goToPrevious = () => {
+    setCurrentIndex(prevIndex => (prevIndex - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
+  };
+
+  const goToSlide = (index) => {
+    setCurrentIndex(index);
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
