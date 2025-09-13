@@ -4,6 +4,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 const HERO_SLIDES = [
   {
     id: 1,
+const HERO_SLIDES = [
+  {
+    id: 1,
     imageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2574&auto=format&fit=crop',
     title: 'Bienvenue chez Wafi',
     subtitle: 'Votre destination beauté et technologie au Sénégal'
@@ -29,7 +32,6 @@ const HERO_SLIDES = [
 ];
 
 const HeroCarousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
 
   const goToNext = useCallback(() => {
     setCurrentIndex(prevIndex => (prevIndex + 1) % HERO_SLIDES.length);
