@@ -27,6 +27,91 @@ export const HERO_SLIDES = [
 
 
 export const PRODUCTS: Product[] = [
+  // Produits de Beauté
+  {
+    id: 12,
+    name: "Crème Anti-Âge 'Éternelle Jeunesse'",
+    price: 45000,
+    imageUrls: ["https://images.unsplash.com/photo-1556228578-8c89e6adf883?q=80&w=2574&auto=format&fit=crop"],
+    description: "Une crème révolutionnaire qui combat les signes du vieillissement avec des ingrédients naturels premium.",
+    category: "Produits de Beauté",
+    stock: 18,
+    status: 'active'
+  },
+  {
+    id: 13,
+    name: "Masque Hydratant 'Oasis'",
+    price: 25000,
+    imageUrls: ["https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2574&auto=format&fit=crop"],
+    description: "Un masque intensément hydratant qui redonne éclat et souplesse à votre peau en 15 minutes.",
+    category: "Produits de Beauté",
+    stock: 30,
+    status: 'active'
+  },
+  {
+    id: 14,
+    name: "Fond de Teint 'Perfection Naturelle'",
+    price: 32000,
+    imageUrls: ["https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=2574&auto=format&fit=crop"],
+    description: "Un fond de teint longue tenue qui s'adapte parfaitement à votre carnation pour un teint unifié.",
+    category: "Produits de Beauté",
+    stock: 25,
+    status: 'active'
+  },
+  {
+    id: 15,
+    name: "Palette Ombres à Paupières 'Sunset Dreams'",
+    price: 28000,
+    imageUrls: ["https://images.unsplash.com/photo-1583241800698-9c2e8b2b9e8b?q=80&w=2574&auto=format&fit=crop"],
+    description: "12 teintes chaudes et vibrantes pour créer des looks de jour comme de soirée.",
+    category: "Produits de Beauté",
+    stock: 20,
+    status: 'active'
+  },
+  // Électronique
+  {
+    id: 16,
+    name: "Smartphone 'TechPro Max'",
+    price: 350000,
+    imageUrls: [
+      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=2574&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?q=80&w=2574&auto=format&fit=crop"
+    ],
+    description: "Le dernier smartphone avec écran OLED 6.7', triple caméra 108MP et batterie longue durée.",
+    category: "Électronique",
+    stock: 8,
+    status: 'active'
+  },
+  {
+    id: 17,
+    name: "Tablette 'CreativeTab Pro'",
+    price: 280000,
+    imageUrls: ["https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?q=80&w=2574&auto=format&fit=crop"],
+    description: "Tablette haute performance avec écran 12.9' et stylet inclus, parfaite pour le travail et la créativité.",
+    category: "Électronique",
+    stock: 12,
+    status: 'active'
+  },
+  {
+    id: 18,
+    name: "Casque Gaming 'SoundWave Elite'",
+    price: 75000,
+    imageUrls: ["https://images.unsplash.com/photo-1599669454699-248893623440?q=80&w=2574&auto=format&fit=crop"],
+    description: "Casque gaming professionnel avec son surround 7.1 et microphone anti-bruit intégré.",
+    category: "Électronique",
+    stock: 15,
+    status: 'active'
+  },
+  {
+    id: 19,
+    name: "Chargeur Sans Fil 'PowerPad Ultra'",
+    price: 35000,
+    imageUrls: ["https://images.unsplash.com/photo-1609592806596-4d1b5e5e0e0e?q=80&w=2574&auto=format&fit=crop"],
+    description: "Station de charge sans fil rapide compatible avec tous les appareils Qi, design élégant.",
+    category: "Électronique",
+    stock: 25,
+    status: 'active'
+  },
   {
     id: 7,
     name: "Écharpe en Soie 'Jardin d'Hiver'",

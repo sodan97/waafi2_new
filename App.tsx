@@ -140,6 +140,41 @@ const App: React.FC = () => {
         return (
           <>
             <HeroCarousel />
+            <div className="bg-gradient-to-r from-rose-50 to-pink-50 py-16 rounded-2xl mb-16">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl font-bold text-gray-800 mb-4">Pourquoi choisir Wafi ?</h2>
+                <p className="text-lg text-gray-600 max-w-3xl mx-auto">Nous vous offrons une expérience d'achat exceptionnelle avec des produits de qualité et un service client irréprochable</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div className="text-center p-6">
+                  <div className="bg-rose-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">Qualité Garantie</h3>
+                  <p className="text-gray-600">Tous nos produits sont soigneusement sélectionnés pour leur qualité exceptionnelle</p>
+                </div>
+                <div className="text-center p-6">
+                  <div className="bg-rose-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">Livraison Rapide</h3>
+                  <p className="text-gray-600">Commandez aujourd'hui et recevez vos produits rapidement partout au Sénégal</p>
+                </div>
+                <div className="text-center p-6">
+                  <div className="bg-rose-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">Support WhatsApp</h3>
+                  <p className="text-gray-600">Contactez-nous facilement via WhatsApp pour toute question ou commande</p>
+                </div>
+              </div>
+            </div>
             <CategoryList onSelectCategory={handleSelectCategory} />
           </>
         );
